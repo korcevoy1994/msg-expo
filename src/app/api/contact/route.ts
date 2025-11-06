@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       phone: String(body.phone || '').trim(),
       brand: String(body.brand || '').trim(),
       company_name: String(body.companyName || '').trim(),
-      fiscal_code: body.fiscalCode ? String(body.fiscalCode).trim() : null,
       services: Array.isArray(body.services) ? body.services : [],
       message: body.message ? String(body.message).trim() : null,
       created_at: new Date().toISOString(),

@@ -23,9 +23,9 @@ const ruDefaults: ContactFormStrings = {
     email: "Email",
     phone: "Контактный номер",
     brand: "Бренд",
-    companyName: "Юридическое название компании",
-    fiscalCode: "Фискальный код (необязательное поле)",
+    companyName: "Юридическое название компании (необязательное поле)",
     servicesQuestion: "Какие услуги вас интересуют? *",
+    consent: "Согласен на обработку персональных данных",
     message: "Дополнительная информация (необязательно)",
   },
   placeholders: {
@@ -35,7 +35,6 @@ const ruDefaults: ContactFormStrings = {
     phoneMask: "+373 XX XXX XXX",
     brand: "Введите название бренда",
     companyName: "Введите юридическое название",
-    fiscalCode: "Введите фискальный код",
     message: "Расскажите подробнее о вашем мероприятии или задайте вопросы...",
   },
   buttons: {
@@ -62,6 +61,7 @@ const ruDefaults: ContactFormStrings = {
     brandMin: "Бренд должен содержать минимум 2 символа",
     companyNameMin: "Юридическое название компании должно содержать минимум 2 символа",
     servicesMin: "Выберите хотя бы одну услугу",
+    consentRequired: "Необходимо согласие на обработку персональных данных",
   },
   messages: {
     submitSuccess: "Заявка успешно отправлена!",
@@ -98,10 +98,10 @@ export function ContactForm({ t }: { t?: ContactFormStrings }) {
     email: z.string().email(dict.validation.email),
     phone: z.string().regex(/^\+373\s\d{2}\s\d{3}\s\d{3}$/, dict.validation.phone),
     brand: z.string().min(2, dict.validation.brandMin),
-    companyName: z.string().min(2, dict.validation.companyNameMin),
-    fiscalCode: z.string().optional(),
+    companyName: z.string().optional(),
     services: z.array(z.string()).min(1, dict.validation.servicesMin),
     message: z.string().optional(),
+    consent: z.boolean().refine(v => v === true, { message: dict.validation.consentRequired }),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -113,9 +113,9 @@ export function ContactForm({ t }: { t?: ContactFormStrings }) {
       phone: "+373 ",
       brand: "",
       companyName: "",
-      fiscalCode: "",
       services: [],
       message: "",
+      consent: false,
     },
   })
 
@@ -326,7 +326,7 @@ export function ContactForm({ t }: { t?: ContactFormStrings }) {
                 name="companyName"
                 render={({ field }) => (
                   <FormItem>
-                          <FormLabel className="text-base text-gray-700 dark:text-gray-200">{dict.labels.companyName} *</FormLabel>
+                          <FormLabel className="text-base text-gray-700 dark:text-gray-200">{dict.labels.companyName}</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder={dict.placeholders.companyName} 
@@ -340,24 +340,7 @@ export function ContactForm({ t }: { t?: ContactFormStrings }) {
               />
             </div>
 
-            {/* Фискальный код */}
-            <FormField
-              control={form.control}
-              name="fiscalCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base text-gray-700 dark:text-gray-200">{dict.labels.fiscalCode}</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder={dict.placeholders.fiscalCode} 
-                      {...field} 
-                      className="text-lg py-6 px-4 bg-white/50 dark:bg-gray-800/50 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
 
             {/* Услуги */}
             <FormField
@@ -437,6 +420,30 @@ export function ContactForm({ t }: { t?: ContactFormStrings }) {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Согласие на обработку персональных данных */}
+            <FormField
+              control={form.control}
+              name="consent"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-3">
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        checked={!!field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        className="w-4 h-4 rounded border-gray-300 dark:border-gray-600"
+                      />
+                    </FormControl>
+                    <FormLabel className="text-sm text-gray-700 dark:text-gray-200">
+                      {dict.labels.consent}
+                    </FormLabel>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

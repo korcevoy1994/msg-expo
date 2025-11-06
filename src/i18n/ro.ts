@@ -8,8 +8,8 @@ export type ContactFormStrings = {
     phone: string
     brand: string
     companyName: string
-    fiscalCode: string
     servicesQuestion: string
+    consent: string
     message: string
   }
   placeholders: {
@@ -19,7 +19,6 @@ export type ContactFormStrings = {
     phoneMask: string
     brand: string
     companyName: string
-    fiscalCode: string
     message: string
   }
   buttons: {
@@ -37,6 +36,7 @@ export type ContactFormStrings = {
     brandMin: string
     companyNameMin: string
     servicesMin: string
+    consentRequired: string
   }
   messages: {
     submitSuccess: string
@@ -54,9 +54,9 @@ export const ro: ContactFormStrings = {
     email: "Email",
     phone: "Număr de telefon",
     brand: "Brand",
-    companyName: "Denumirea juridică a companiei",
-    fiscalCode: "Cod fiscal (opțional)",
+    companyName: "Denumirea juridică a companiei (opțional)",
     servicesQuestion: "Ce servicii vă interesează? *",
+    consent: "Sunt de acord cu prelucrarea datelor personale",
     message: "Informații suplimentare (opțional)",
   },
   placeholders: {
@@ -66,7 +66,6 @@ export const ro: ContactFormStrings = {
     phoneMask: "+373 XX XXX XXX",
     brand: "Introduceți numele brandului",
     companyName: "Introduceți denumirea juridică",
-    fiscalCode: "Introduceți codul fiscal",
     message: "Descrieți evenimentul sau adresați întrebări...",
   },
   buttons: {
@@ -93,6 +92,7 @@ export const ro: ContactFormStrings = {
     brandMin: "Brandul trebuie să aibă minim 2 caractere",
     companyNameMin: "Denumirea juridică a companiei trebuie să aibă minim 2 caractere",
     servicesMin: "Selectați cel puțin un serviciu",
+    consentRequired: "Trebuie să acceptați prelucrarea datelor personale",
   },
   messages: {
     submitSuccess: "Cererea a fost trimisă cu succes!",
